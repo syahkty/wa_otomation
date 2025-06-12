@@ -1,0 +1,102 @@
+{
+  "hutang": {
+    "081234567890": {
+      "totalHutang": 17000,
+      "transaksi": [
+        {
+          "jenis": "hutang",
+          "jumlah": 12000,
+          "keterangan": "Beli Es Teh",
+          "tanggal": "2025-06-12T12:00:00Z"
+        },
+        {
+          "jenis": "hutang",
+          "jumlah": 5000,
+          "keterangan": "Beli Gorengan",
+          "tanggal": "2025-06-12T12:05:00Z"
+        }
+      ]
+    },
+    "089876543210": {
+      "totalHutang": 50000,
+      "transaksi": [
+        {
+          "jenis": "hutang",
+          "jumlah": 50000,
+          "keterangan": "Isi Bensin",
+          "tanggal": "2025-06-12T11:00:00Z"
+        }
+      ]
+    },
+    "6283138953764": {
+      "totalHutang": 0,
+      "transaksi": [
+        {
+          "jenis": "hutang",
+          "jumlah": 12000,
+          "keterangan": "beli es teh",
+          "tanggal": "2025-06-12T05:10:43.108Z"
+        },
+        {
+          "jenis": "hutang",
+          "jumlah": 12000,
+          "keterangan": "beli es teh",
+          "tanggal": "2025-06-12T05:16:25.009Z"
+        },
+        {
+          "jenis": "bayar",
+          "jumlah": 12000,
+          "keterangan": "Pembayaran",
+          "tanggal": "2025-06-12T05:16:36.502Z"
+        },
+        {
+          "jenis": "hutang",
+          "jumlah": 12000,
+          "keterangan": "beli es teh",
+          "tanggal": "2025-06-12T05:18:19.080Z"
+        },
+        {
+          "jenis": "bayar",
+          "jumlah": 12000,
+          "keterangan": "Pembayaran",
+          "tanggal": "2025-06-12T05:20:17.461Z"
+        },
+        {
+          "jenis": "hutang",
+          "jumlah": 12000,
+          "keterangan": "beli bakso bakar",
+          "tanggal": "2025-06-12T05:20:39.367Z"
+        },
+        {
+          "jenis": "bayar",
+          "jumlah": 24000,
+          "keterangan": "Pembayaran",
+          "tanggal": "2025-06-12T05:22:49.986Z"
+        }
+      ]
+    },
+    "6282337395576": {
+      "totalHutang": 15000,
+      "transaksi": [
+        {
+          "jenis": "hutang",
+          "jumlah": 5000,
+          "keterangan": "beli es krim",
+          "tanggal": "2025-06-12T05:25:27.087Z"
+        },
+        {
+          "jenis": "hutang",
+          "jumlah": 50000,
+          "keterangan": "beli skincare",
+          "tanggal": "2025-06-12T05:26:21.190Z"
+        },
+        {
+          "jenis": "bayar",
+          "jumlah": 40000,
+          "keterangan": "Pembayaran",
+          "tanggal": "2025-06-12T05:27:10.094Z"
+        }
+      ]
+    }
+  }
+}

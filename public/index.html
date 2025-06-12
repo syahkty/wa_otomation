@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Hutang</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #5a67d8; }
+        .hutang-list { list-style: none; padding: 0; }
+        .hutang-item { background: #fff; border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .hutang-item h2 { margin: 0 0 10px 0; font-size: 1.2em; color: #333; }
+        .hutang-item .total { font-size: 1.5em; font-weight: bold; color: #e53e3e; }
+        .transaksi-list { list-style: none; padding-left: 20px; margin-top: 10px; border-left: 2px solid #eee; }
+        .transaksi-item { padding: 5px 0; font-size: 0.9em; }
+        .transaksi-item.hutang { color: #c53030; }
+        .transaksi-item.bayar { color: #38a169; }
+        #loading { text-align: center; font-size: 1.2em; color: #777; }
+        #last-updated { text-align: center; font-size: 0.8em; color: #999; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Catatan Hutang</h1>
+        <div id="loading">Memuat data...</div>
+        <ul id="hutang-list" class="hutang-list">
+            </ul>
+        <div id="last-updated"></div>
+    </div>
+
+    <script>
+        // Ganti URL ini dengan URL API Anda jika sudah di-hosting online
+        const API_URL = 'http://localhost:3100/api/hutang';
+
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        }
+
+        async function fetchHutang() {
+            const listElement = document.getElementById('hutang-list');
+            const loadingElement = document.getElementById('loading');
+            const lastUpdatedElement = document.getElementById('last-updated');
+            
+            listElement.innerHTML = ''; // Kosongkan daftar sebelum diisi ulang
+            loadingElement.style.display = 'block'; // Tampilkan loading
+
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const dataHutang = await response.json();
+
+                loadingElement.style.display = 'none'; // Sembunyikan loading
+
+                if (dataHutang.length === 0) {
+                    listElement.innerHTML = '<p style="text-align:center;">🎉 Hore! Tidak ada yang berhutang. 🎉</p>';
+                } else {
+                     // Urutkan berdasarkan total hutang terbesar
+                    dataHutang.sort((a, b) => b.totalHutang - a.totalHutang);
+
+                    dataHutang.forEach(hutang => {
+                        // Hanya tampilkan yang total hutangnya > 0
+                        if (hutang.totalHutang > 0) {
+                            const item = document.createElement('li');
+                            item.className = 'hutang-item';
+
+                            let transaksiHtml = '<ul class="transaksi-list">';
+                            hutang.transaksi.slice().reverse().forEach(t => { // reverse untuk menampilkan yg terbaru di atas
+                                const jumlahFormatted = formatRupiah(t.jumlah);
+                                const tanggalFormatted = new Date(t.tanggal).toLocaleString('id-ID');
+                                if (t.jenis === 'hutang') {
+                                    transaksiHtml += `<li class="transaksi-item hutang">▲ <strong>${jumlahFormatted}</strong> - ${t.keterangan} (${tanggalFormatted})</li>`;
+                                } else {
+                                    transaksiHtml += `<li class="transaksi-item bayar">▼ <strong>${jumlahFormatted}</strong> - ${t.keterangan} (${tanggalFormatted})</li>`;
+                                }
+                            });
+                            transaksiHtml += '</ul>';
+
+                            item.innerHTML = `
+                                <h2>${hutang.nomor}</h2>
+                                <p>Total Hutang: <span class="total">${formatRupiah(hutang.totalHutang)}</span></p>
+                                ${transaksiHtml}
+                            `;
+                            listElement.appendChild(item);
+                        }
+                    });
+                }
+                lastUpdatedElement.textContent = `Data diperbarui pada: ${new Date().toLocaleString('id-ID')}`;
+
+            } catch (error) {
+                loadingElement.textContent = 'Gagal memuat data. Coba refresh halaman.';
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        // Panggil fungsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', fetchHutang);
+    </script>
+
+</body>
+</html>
